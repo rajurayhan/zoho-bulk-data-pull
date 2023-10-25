@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ZohoAuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-}); 
+})->name('home'); 
 
-Route::get('/zoho/oauth', 'ZohoAuthController@redirectToZoho')->name('zoho.oauth');
-Route::get('/zoho/auth-callback', 'ZohoAuthController@handleZohoCallback')->name('zoho.oauth.callback');
+Route::get('/zoho/oauth', [ZohoAuthController::class, 'redirectToZoho'])->name('zoho.oauth');
+Route::get('/zoho/auth-callback', [ZohoAuthController::class, 'handleZohoCallback'])->name('zoho.oauth.callback'); 
 
