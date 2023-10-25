@@ -5,8 +5,10 @@ namespace App\ZohoServices;
 class CreateBulkReadjob
 {
     public $token; 
-    function __construct($token) {
+    public $module; 
+    function __construct($token, $module) {
         $this->token = $token;
+        $this->module = $module;
     }
 	public function execute(){
         $curl_pointer = curl_init();
@@ -19,9 +21,10 @@ class CreateBulkReadjob
         $requestBody = array();
         $callback = array();
         $callback["url"]="http://localhost:8000/zoho/bulk-callback";
-        $callback["method"]="post";
+        $callback["method"]="get";
         $query = array();
-        $query["module"]="Contacts";
+        $query["module"]= $this->module;
+        // $query["scope"]= "ZohoCRM.modules.contacts.READ";
         $fields = array();
         $fields[] = "Last_Name";
         $fields[] = "Owner";

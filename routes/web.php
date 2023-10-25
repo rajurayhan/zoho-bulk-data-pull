@@ -23,4 +23,5 @@ Route::get('/zoho/auth-callback', [ZohoAuthController::class, 'handleZohoCallbac
 Route::get('/zoho/bulk-callback', [ZohoAuthController::class, 'bulkCallback'])->name('zoho.bulk.callback'); 
 
 Route::get('/zoho/bulk-contacts', [ZohoAuthController::class, 'bulkContacts'])->name('zoho.bulk.contacts'); 
+Route::get('/zoho/bulk-lead', [ZohoAuthController::class, 'bulkLeads'])->name('zoho.bulk.lead'); 
 

@@ -24,6 +24,7 @@ class ZohoAuthController extends Controller
                 'response_type' => 'code',
                 'redirect_uri' => route('zoho.oauth.callback'),
                 'scope' => 'ZohoCRM.bulk.read',
+                // 'scope' => 'ZohoCRM.modules.contacts.READ',
             ];
 
             $redirectURL = 'https://accounts.zoho.com/oauth/v2/auth?'.http_build_query($requestBody);
@@ -41,7 +42,7 @@ class ZohoAuthController extends Controller
                 'code' => request()->code,
                 'client_id' => config('services.zoho.client_id'),
                 'client_secret' => config('services.zoho.client_secret'),
-                'scope' => 'ZohoCRM.bulk.read',
+                'scope' => 'ZohoCRM.bulk.read,',
                 'grant_type' => 'authorization_code',
                 'redirect_uri' => route('zoho.oauth.callback')
             ];
@@ -59,6 +60,8 @@ class ZohoAuthController extends Controller
 
                 $tokenObj->save();
             }
+
+            return $data;
         } catch (\Throwable $th) {
             //throw $th;
         }
@@ -69,8 +72,17 @@ class ZohoAuthController extends Controller
     }
 
     public function bulkContacts(Request $request){
+        set_time_limit(300);
         $token = AccessToken::latest()->first();
-        $bulk = new CreateBulkReadjob($token->token);
+        \Log::info(['Latest Token' => $token->token]);
+        $bulk = new CreateBulkReadjob($token->token, 'Contacts');
+        return $bulk->execute();
+    }
+
+    public function bulkLeads(Request $request){
+        set_time_limit(300);
+        $token = AccessToken::latest()->first();
+        $bulk = new CreateBulkReadjob($token->token, 'Leads');
         return $bulk->execute();
     }
 }
