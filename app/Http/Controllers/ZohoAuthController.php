@@ -1,6 +1,8 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\AccessToken;
+use App\ZohoServices\CreateBulkReadjob;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use GuzzleHttp\Client as GuzzleClient;
@@ -21,7 +23,7 @@ class ZohoAuthController extends Controller
                 'client_id' => config('services.zoho.client_id'),
                 'response_type' => 'code',
                 'redirect_uri' => route('zoho.oauth.callback'),
-                'scope' => 'ZohoCRM.modules.ALL',
+                'scope' => 'ZohoCRM.bulk.read',
             ];
 
             $redirectURL = 'https://accounts.zoho.com/oauth/v2/auth?'.http_build_query($requestBody);
@@ -39,7 +41,7 @@ class ZohoAuthController extends Controller
                 'code' => request()->code,
                 'client_id' => config('services.zoho.client_id'),
                 'client_secret' => config('services.zoho.client_secret'),
-                'scope' => 'ZohoCRM.modules.ALL',
+                'scope' => 'ZohoCRM.bulk.read',
                 'grant_type' => 'authorization_code',
                 'redirect_uri' => route('zoho.oauth.callback')
             ];
@@ -49,10 +51,26 @@ class ZohoAuthController extends Controller
             $response = $client->request('POST', $api);
             $response = $response->getBody()->getContents();
             $data = json_decode($response);
+            \Log::info(['Zoho Token' => $data]);
 
-            return $data;
+            if($data->access_token){
+                $tokenObj = new AccessToken();
+                $tokenObj->token = $data->access_token; 
+
+                $tokenObj->save();
+            }
         } catch (\Throwable $th) {
             //throw $th;
         }
+    }
+
+    public function bulkCallback(Request $request){
+        return $request->all();
+    }
+
+    public function bulkContacts(Request $request){
+        $token = AccessToken::latest()->first();
+        $bulk = new CreateBulkReadjob($token->token);
+        return $bulk->execute();
     }
 }

@@ -20,4 +20,7 @@ Route::get('/', function () {
 
 Route::get('/zoho/oauth', [ZohoAuthController::class, 'redirectToZoho'])->name('zoho.oauth');
 Route::get('/zoho/auth-callback', [ZohoAuthController::class, 'handleZohoCallback'])->name('zoho.oauth.callback'); 
+Route::get('/zoho/bulk-callback', [ZohoAuthController::class, 'bulkCallback'])->name('zoho.bulk.callback'); 
+
+Route::get('/zoho/bulk-contacts', [ZohoAuthController::class, 'bulkContacts'])->name('zoho.bulk.contacts'); 
 
