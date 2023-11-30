@@ -8,6 +8,7 @@ use App\Models\Modules;
 use App\Models\AccessToken;
 use App\Models\BulkRequest;
 use App\ZohoServices\CreateBulkReadjob;
+use App\ZohoServices\DownloadBulkReadResult;
 use App\ZohoServices\GetListofModules;
 use App\ZohoServices\GettheStatusoftheBulkReadJob;
 
@@ -70,8 +71,7 @@ class ModuleController extends Controller
         }
         // return $response;
         return redirect()->back();
-    }
-
+    } 
     public function checkRequestStatus($id){
         $this->checkToken();
         $module = Modules::with('bulk_request')->findOrFail($id);
@@ -80,7 +80,29 @@ class ModuleController extends Controller
             $jobId = $module->bulk_request->job_id;
             $bulk = new GettheStatusoftheBulkReadJob($token->token, $jobId);
 
-            return $response =  $bulk->execute(); 
+            $response =  $bulk->execute(); 
+            if(isset($response['data'])){
+                $data = $response['data'][0];
+                $bulkRequest = BulkRequest::where('module_id', $module->id)->first();
+                $bulkRequest->status = $data['state'];
+                $bulkRequest->save();
+
+            }
+
+            return redirect()->back();
         } 
+    }
+
+    public function downloadRequest($id){
+        $this->checkToken();
+        $module = Modules::with('bulk_request')->findOrFail($id);
+        if($module->bulk_request){
+            $token = AccessToken::latest()->first();
+            $jobId = $module->bulk_request->job_id;
+            $bulk = new DownloadBulkReadResult($token->token, $jobId);
+
+            $bulk->execute(); 
+        }
+        return redirect()->back();
     }
 }

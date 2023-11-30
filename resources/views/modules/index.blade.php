@@ -29,8 +29,11 @@
                             <td>
                                 <a href="{{ route('zoho.fields.sync', $module->id) }}" class="btn btn-info btn-sm">Sync</a>
                                 <a href="{{ route('zoho.modules.request', $module->id) }}" class="btn btn-info btn-sm">Request</a>
-                                @if ($module->bulk_request)
+                                @if ($module->bulk_request && $module->bulk_request->status != 'COMPLETED')
                                 <a href="{{ route('zoho.modules.request.status', $module->id) }}" class="btn btn-info btn-sm">Status</a>
+                                @endif
+                                @if ($module->bulk_request && $module->bulk_request->status == 'COMPLETED')
+                                <a href="{{ route('zoho.modules.request.download', $module->id) }}" class="btn btn-info btn-sm">Pull</a>
                                 @endif
                             </td>
                         </tr>
