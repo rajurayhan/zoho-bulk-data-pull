@@ -11,6 +11,7 @@ use App\ZohoServices\CreateBulkReadjob;
 use App\ZohoServices\DownloadBulkReadResult;
 use App\ZohoServices\GetListofModules;
 use App\ZohoServices\GettheStatusoftheBulkReadJob;
+use Illuminate\Support\Facades\Response;
 
 class ModuleController extends Controller
 {
@@ -44,9 +45,9 @@ class ModuleController extends Controller
     public function makeRequest($id){
         $this->checkToken();
         $module = Modules::with('fields')->findOrFail($id); 
-        if(sizeof($module->fields) < 1){
-            return 'Sync Fields first';
-        }
+        // if(sizeof($module->fields) < 1){
+        //     return 'Sync Fields first';
+        // }
         $fieldsArray = $module->fields->pluck('api_name');
         $token = AccessToken::latest()->first();
 
@@ -93,15 +94,31 @@ class ModuleController extends Controller
         } 
     }
 
-    public function downloadRequest($id){
+    public function downloadRequest($id){ 
         $this->checkToken();
         $module = Modules::with('bulk_request')->findOrFail($id);
-        if($module->bulk_request){
+        if($module->bulk_request){ 
+            if($module->bulk_request->file_path != null){
+                $filePath = base_path().'/downloads/'.$module->bulk_request->file_path;
+                if(file_exists($filePath)){
+                    return Response::download($filePath, $module->api_name.".zip");
+                } 
+            } 
             $token = AccessToken::latest()->first();
             $jobId = $module->bulk_request->job_id;
             $bulk = new DownloadBulkReadResult($token->token, $jobId);
+            $fileName = $bulk->execute(); 
 
-            $bulk->execute(); 
+            $bulkRequest = BulkRequest::where('module_id', $module->id)->first();
+            $bulkRequest->file_path = $fileName;
+            $bulkRequest->save();
+
+            return $bulkRequest;
+
+            $filePath = base_path().'/downloads/'.$fileName;
+            if(file_exists($filePath)){
+                return Response::download($filePath, $module->api_name.".zip");
+            } 
         }
         return redirect()->back();
     }

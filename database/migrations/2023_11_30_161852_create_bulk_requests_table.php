@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('job_id')->nullable();
             $table->longText('response')->nullable();
             $table->longText('status_response')->nullable();;
+            $table->string('file_path')->nullable();;
             $table->string('status');
             $table->timestamps();
         });

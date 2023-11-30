@@ -64,5 +64,7 @@ class DownloadBulkReadResult
         $stream = $response;
         fputs($fp, $stream);
         fclose($fp); 
+
+        return $fileName;
     }
 }

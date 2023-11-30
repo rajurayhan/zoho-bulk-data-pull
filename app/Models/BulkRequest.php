@@ -9,7 +9,7 @@ class BulkRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['job_id', 'module_id', 'status', 'response', 'status_response'];
+    protected $fillable = ['job_id', 'module_id', 'status', 'response', 'status_response' , 'file_path'];
 
     public function module()
     {
