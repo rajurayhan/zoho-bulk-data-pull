@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Traits\TokenCheckTrait;
 use App\Models\AccessToken;
 use Illuminate\Http\Request;
 use App\Models\Fields;
@@ -10,6 +11,8 @@ use App\ZohoServices\FieldsMetaData;
 
 class FieldController extends Controller
 {
+
+    use TokenCheckTrait;
     public function index()
     {
         $fields = Fields::with('module')->get();
@@ -18,6 +21,7 @@ class FieldController extends Controller
 
     public function syncfields($moduleId){
         set_time_limit(300); 
+        $this->checkToken();
         $module = Modules::findOrFail($moduleId);
         $token = AccessToken::latest()->first();
 

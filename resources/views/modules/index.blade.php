@@ -25,10 +25,13 @@
                             <td>{{ $module->name }}</td>
                             <td>{{ $module->api_name }}</td>
                             <td>@if(sizeof($module->fields) > 0) {{ 'Synced' }} @else {{ '-' }} @endif</td>
-                            <td>@if($module->bulk_request) {{ 'Synced' }} @else {{ '-' }} @endif</td>
+                            <td>@if($module->bulk_request) {{ $module->bulk_request->status }} @else {{ '-' }} @endif</td>
                             <td>
-                                <a href="{{ route('zoho.fields.sync', $module->id) }}" class="btn btn-info btn-sm">Sync Fields</a>
-                                <a href="{{ route('zoho.modules.request', $module->id) }}" class="btn btn-info btn-sm">Request Data</a>
+                                <a href="{{ route('zoho.fields.sync', $module->id) }}" class="btn btn-info btn-sm">Sync</a>
+                                <a href="{{ route('zoho.modules.request', $module->id) }}" class="btn btn-info btn-sm">Request</a>
+                                @if ($module->bulk_request)
+                                <a href="{{ route('zoho.modules.request.status', $module->id) }}" class="btn btn-info btn-sm">Status</a>
+                                @endif
                             </td>
                         </tr>
                     @endforeach
