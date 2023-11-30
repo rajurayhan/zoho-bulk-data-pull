@@ -23,8 +23,8 @@ class ZohoAuthController extends Controller
                 'client_id' => config('services.zoho.client_id'),
                 'response_type' => 'code',
                 'redirect_uri' => route('zoho.oauth.callback'),
-                'scope' => 'ZohoCRM.bulk.read',
                 // 'scope' => 'ZohoCRM.modules.contacts.READ',
+                'scope' => 'ZohoCRM.bulk.ALL,ZohoCRM.modules.ALL',
             ];
 
             $redirectURL = 'https://accounts.zoho.com/oauth/v2/auth?'.http_build_query($requestBody);
@@ -42,7 +42,8 @@ class ZohoAuthController extends Controller
                 'code' => request()->code,
                 'client_id' => config('services.zoho.client_id'),
                 'client_secret' => config('services.zoho.client_secret'),
-                'scope' => 'ZohoCRM.bulk.read,',
+                // 'scope' => 'ZohoCRM.modules.contacts.READ',
+                'scope' => 'ZohoCRM.bulk.ALL,ZohoCRM.modules.ALL',
                 'grant_type' => 'authorization_code',
                 'redirect_uri' => route('zoho.oauth.callback')
             ];

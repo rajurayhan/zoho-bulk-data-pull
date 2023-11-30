@@ -19,12 +19,12 @@ class CreateBulkReadjob
         $curl_options[CURLOPT_HEADER] = 1;
         $curl_options[CURLOPT_CUSTOMREQUEST] = "POST";
         $requestBody = array();
-        $callback = array();
-        $callback["url"]="http://localhost:8000/zoho/bulk-callback";
-        $callback["method"]="get";
+        // $callback = array();
+        // $callback["url"]="http://localhost:8000/zoho/bulk-callback";
+        // $callback["method"]="post";
         $query = array();
         $query["module"]= $this->module;
-        // $query["scope"]= "ZohoCRM.modules.contacts.READ";
+        $query["scope"]= "ZohoCRM.modules.contacts.READ";
         $fields = array();
         $fields[] = "Last_Name";
         $fields[] = "Owner";
@@ -33,7 +33,7 @@ class CreateBulkReadjob
         $fields[] = "Account_Name.Phone";
         $fields[] = "Lead_Source";
         $fields[] = "Created_Time";
-        $requestBody["callback"] =$callback;
+        // $requestBody["callback"] =$callback;
         $query["fields"]=$fields;
         // $criteria = array();
         // $criteria["group_operator"]="or";
