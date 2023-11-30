@@ -11,7 +11,7 @@ class ModuleController extends Controller
 {
     public function index()
     {
-        $modules = Modules::all();
+        $modules = Modules::with('fields', 'bulk_request')->get();
         return view('modules.index', compact('modules'));
     }
 

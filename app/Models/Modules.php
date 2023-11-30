@@ -20,4 +20,9 @@ class Modules extends Model
     {
         return $this->hasMany(BulkRequest::class, 'module_id');
     }
+
+    public function bulk_request()
+    {
+        return $this->hasOne(BulkRequest::class, 'module_id');
+    }
 }

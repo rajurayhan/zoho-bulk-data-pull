@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('bulk_requests', function (Blueprint $table) {
             $table->id();
             $table->foreignId('module_id')->constrained('modules')->nullable();
+            $table->string('job_id')->nullable();
             $table->longText('response')->nullable();
             $table->longText('status_response')->nullable();;
             $table->string('status');
