@@ -9,6 +9,8 @@ class Modules extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['name', 'api_name'];
+
     public function fields()
     {
         return $this->hasMany(Fields::class, 'module_id');

@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ZohoAuthController;
+use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\FieldController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,8 +17,17 @@ use App\Http\Controllers\ZohoAuthController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-})->name('home'); 
+    return view('home');
+})->name('home');
+
+
+
+Route::get('/modules', [ModuleController::class, 'index'])->name('zoho.modules');
+Route::get('/sync-modules', [ModuleController::class, 'syncModules'])->name('zoho.modules.sync');
+
+Route::get('/fields', [FieldController::class, 'index'])->name('zoho.fields');
+Route::get('/sync-fields', [FieldController::class, 'syncfields'])->name('zoho.fields.sync');
+
 
 Route::get('/zoho/oauth', [ZohoAuthController::class, 'redirectToZoho'])->name('zoho.oauth');
 Route::get('/zoho/auth-callback', [ZohoAuthController::class, 'handleZohoCallback'])->name('zoho.oauth.callback'); 
