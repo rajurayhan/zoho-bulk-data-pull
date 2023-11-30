@@ -9,22 +9,16 @@ use GuzzleHttp\Client as GuzzleClient;
 
 class ZohoAuthController extends Controller
 {
+    private $scopes = 'ZohoCRM.bulk.ALL,ZohoCRM.modules.ALL,ZohoCRM.settings.ALL';
     public function redirectToZoho()
     {
-        // $state = bin2hex(random_bytes(16)); // Generate a random state
-        // session(['oauth_state' => $state]);
-
-        // $url = "https://accounts.zoho.com/oauth/v2/auth?scope=ZohoCRM.modules.ALL&response_type=code&client_id=" . config('services.zoho.client_id') . "&scope=ZohoCRM.modules.ALL&state=" . $state . "&redirect_uri=" . config('services.zoho.redirect_uri');
-        
-        // return redirect($url);
-
-        try {
+           try {
             $requestBody = [ 
                 'client_id' => config('services.zoho.client_id'),
                 'response_type' => 'code',
                 'redirect_uri' => route('zoho.oauth.callback'),
                 // 'scope' => 'ZohoCRM.modules.contacts.READ',
-                'scope' => 'ZohoCRM.bulk.ALL,ZohoCRM.modules.ALL',
+                'scope' => $this->scopes,
             ];
 
             $redirectURL = 'https://accounts.zoho.com/oauth/v2/auth?'.http_build_query($requestBody);
@@ -43,7 +37,7 @@ class ZohoAuthController extends Controller
                 'client_id' => config('services.zoho.client_id'),
                 'client_secret' => config('services.zoho.client_secret'),
                 // 'scope' => 'ZohoCRM.modules.contacts.READ',
-                'scope' => 'ZohoCRM.bulk.ALL,ZohoCRM.modules.ALL',
+                'scope' => $this->scopes,
                 'grant_type' => 'authorization_code',
                 'redirect_uri' => route('zoho.oauth.callback')
             ];

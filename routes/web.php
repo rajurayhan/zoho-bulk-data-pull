@@ -26,7 +26,7 @@ Route::get('/modules', [ModuleController::class, 'index'])->name('zoho.modules')
 Route::get('/sync-modules', [ModuleController::class, 'syncModules'])->name('zoho.modules.sync');
 
 Route::get('/fields', [FieldController::class, 'index'])->name('zoho.fields');
-Route::get('/sync-fields', [FieldController::class, 'syncfields'])->name('zoho.fields.sync');
+Route::get('/sync-fields/{moduleId}', [FieldController::class, 'syncfields'])->name('zoho.fields.sync');
 
 
 Route::get('/zoho/oauth', [ZohoAuthController::class, 'redirectToZoho'])->name('zoho.oauth');

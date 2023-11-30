@@ -23,7 +23,7 @@
                             <td>{{ $module->name }}</td>
                             <td>{{ $module->api_name }}</td>
                             <td>
-                                <a href="{{ route('zoho.fields.sync') }}" class="btn btn-info btn-sm">Sync Fields</a>
+                                <a href="{{ route('zoho.fields.sync', $module->id) }}" class="btn btn-info btn-sm">Sync Fields</a>
                             </td>
                         </tr>
                     @endforeach
