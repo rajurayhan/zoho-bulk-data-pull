@@ -13,10 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('bulk_requests', function (Blueprint $table) {
+        Schema::create('fields', function (Blueprint $table) {
             $table->id();
-            $table->string('module');
-            $table->string('status');
+            $table->string('name');
+            $table->string('api_name');
+            $table->foreignId('module_id')->constrained('modules');
             $table->timestamps();
         });
     }
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('bulk_requests');
+        Schema::dropIfExists('fields');
     }
 };
