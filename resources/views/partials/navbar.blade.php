@@ -5,11 +5,14 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ url('/') }}">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item {{ request()->is('/') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ url('/') }}">Home</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ request()->is('modules') || request()->is('modules/*') ? 'active' : '' }}"> 
                 <a class="nav-link" href="{{ url('/modules') }}">Modules</a>
+            </li>
+            <li class="nav-item {{ request()->is('fields') || request()->is('fields/*') ? 'active' : '' }}"> 
+                <a class="nav-link" href="{{ url('/fields') }}">Fields</a>
             </li>
 
             <li class="nav-item">

@@ -62,7 +62,8 @@ class ZohoAuthController extends Controller
                 $tokenObj->save();
             }
 
-            return $data;
+            // return $data;
+            return redirect()->route('home'); 
         } catch (\Throwable $th) {
             //throw $th;
         }
