@@ -6,9 +6,11 @@ class CreateBulkReadjob
 {
     public $token; 
     public $module; 
-    function __construct($token, $module) {
+    public $fields = []; 
+    function __construct($token, $module, $fields) {
         $this->token = $token;
         $this->module = $module;
+        $this->fields = $fields;
     }
 	public function execute(){
         $curl_pointer = curl_init();
@@ -25,34 +27,8 @@ class CreateBulkReadjob
         $query = array();
         $query["module"]= $this->module;
         $query["scope"]= "ZohoCRM.modules.contacts.READ";
-        $fields = array();
-        $fields[] = "Last_Name";
-        $fields[] = "Owner";
-        $fields[] = "Owner.last_name";
-        $fields[] = "Account_Name.Account_Name";
-        $fields[] = "Account_Name.Phone";
-        $fields[] = "Lead_Source";
-        $fields[] = "Created_Time";
         // $requestBody["callback"] =$callback;
-        $query["fields"]=$fields;
-        // $criteria = array();
-        // $criteria["group_operator"]="or";
-        // $group = array();
-        // $criteria1 = array();
-        // $criteria1["api_name"]="Lead_Source";
-        // $criteria1["comparator"]="equal";
-        // $criteria1["value"]="Advertisement";
-        // $criteria2 = array();   
-        // $criteria2["api_name"]="Owner.last_name";
-        // $criteria2["comparator"]="equal";
-        // $criteria2["value"]="Boyle";
-        // $criteria3 = array();
-        // $criteria3["api_name"]="Account_Name.Phone";
-        // $criteria3["comparator"]="contains";
-        // $criteria3["value"]="5";
-        // $group = [$criteria1,$criteria2,$criteria3];
-        // $criteria["group"] = $group;
-        // $query["criteria"] =$criteria;
+        $query["fields"]=$this->fields;
         $query["page"] =1;
         $requestBody["query"]=$query;
         $curl_options[CURLOPT_POSTFIELDS]= json_encode($requestBody);

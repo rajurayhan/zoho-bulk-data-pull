@@ -28,6 +28,7 @@
                             <td>@if($module->bulk_request) {{ 'Synced' }} @else {{ '-' }} @endif</td>
                             <td>
                                 <a href="{{ route('zoho.fields.sync', $module->id) }}" class="btn btn-info btn-sm">Sync Fields</a>
+                                <a href="{{ route('zoho.modules.request', $module->id) }}" class="btn btn-info btn-sm">Request Data</a>
                             </td>
                         </tr>
                     @endforeach

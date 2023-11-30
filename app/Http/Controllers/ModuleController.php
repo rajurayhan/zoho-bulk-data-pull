@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Modules;
 use App\Models\AccessToken;
+use App\ZohoServices\CreateBulkReadjob;
 use App\ZohoServices\GetListofModules;
 
 class ModuleController extends Controller
@@ -31,5 +32,15 @@ class ModuleController extends Controller
         }
 
         return redirect()->back();
+    }
+
+    public function makeRequest($id){
+        $module = Modules::with('fields')->findOrFail($id);
+        $fieldsArray = $module->fields->pluck('api_name');
+        $token = AccessToken::latest()->first();
+
+        $bulk = new CreateBulkReadjob($token->token, $module->api_name, $fieldsArray);
+        $response =  $bulk->execute();
+        return $response;
     }
 }

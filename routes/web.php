@@ -23,7 +23,10 @@ Route::get('/', function () {
 
 
 Route::get('/modules', [ModuleController::class, 'index'])->name('zoho.modules');
-Route::get('/sync-modules', [ModuleController::class, 'syncModules'])->name('zoho.modules.sync');
+Route::get('/modules/request/{moduleId}', [ModuleController::class, 'makeRequest'])->name('zoho.modules.request');
+Route::get('/modules/request/status/{moduleId}', [ModuleController::class, 'makeRequest'])->name('zoho.modules.request.status');
+
+Route::get('/modules/sync-modules', [ModuleController::class, 'syncModules'])->name('zoho.modules.sync');
 
 Route::get('/fields', [FieldController::class, 'index'])->name('zoho.fields');
 Route::get('/sync-fields/{moduleId}', [FieldController::class, 'syncfields'])->name('zoho.fields.sync');
