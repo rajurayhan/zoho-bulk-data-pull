@@ -113,7 +113,7 @@ class ModuleController extends Controller
             $bulkRequest->file_path = $fileName;
             $bulkRequest->save();
 
-            return $bulkRequest;
+            $bulkRequest;
 
             $filePath = base_path().'/downloads/'.$fileName;
             if(file_exists($filePath)){
